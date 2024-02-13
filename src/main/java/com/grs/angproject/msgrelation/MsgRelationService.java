@@ -10,6 +10,8 @@ public interface MsgRelationService {
     List<MsgRelation> getAllMsgRelations();
     Optional<MsgRelation> getMsgRelationById(Long id);
 
-    Optional<MsgRelation> getMsgRelationObject(Long id);
+    Optional<MsgRelation> getMsg1RelationObject(Long id);
     // Add other service methods as needed
+
+    Optional<MsgRelation> getMsg2RelationObject(Long id);
 }

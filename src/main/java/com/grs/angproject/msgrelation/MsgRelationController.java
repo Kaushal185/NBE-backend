@@ -26,41 +26,40 @@ public class MsgRelationController {
     }
 
     @GetMapping("/{id}")
-    public ArrayList<String> getMsgRelationById(@PathVariable Long id) {
-        ArrayList<String> responseList; //
-        Optional<MsgRelation> obj = msgRelationService.getMsgRelationObject(id);
-        if (obj.isPresent()) {
-            Optional<MsgLog> relObj1 = swiftService.getMessageById(id);
-            MsgLog swiftModel = relObj1.get();
-            String relObj1Msg = swiftModel.getMessage(); // message 1
+    public ArrayList<MsgLog> getMsgRelationById(@PathVariable Long id) {
+        ArrayList<MsgLog> responseList; //
+        Optional<MsgRelation> obj1 = msgRelationService.getMsg1RelationObject(id);
+        Optional<MsgRelation> obj2 = msgRelationService.getMsg2RelationObject(id);
+        if (obj1.isPresent()) {
+            Optional<MsgLog> temp = swiftService.getSelectedId(id);
+            MsgLog relObj1 = temp.get();
+            // String relObj1Msg = relObj1.getMessage(); // message 1
             // String plusIndex1 = findPlusIndices(relObj1Msg); // finding indices for message 1
 
-            MsgRelation msgRelation = obj.get();
+            MsgRelation msgRelation = obj1.get();
             Long id2 = msgRelation.getMsg2();
-            Optional<MsgLog> relObj2 = swiftService.getMessageById(id2);
-            swiftModel = relObj2.get();
-            String relObj2Msg = swiftModel.getMessage(); // message 2
+            Optional<MsgLog> temp2 = swiftService.getSelectedId(id2);
+            MsgLog relObj2 = temp2.get();
+            // String relObj2Msg = swiftModel.getMessage(); // message 2
             // String plusIndex2 = findPlusIndices(relObj2Msg); // finding indices for message 2
-            responseList = new ArrayList<String>(List.of(relObj1Msg, relObj2Msg));
-        } else {
-            responseList = new ArrayList<String>(List.of("DATA NOT PRESENT", "DATA NOT PRESENT"));
+            responseList = new ArrayList<MsgLog>(List.of(relObj1, relObj2));
+        } else if (obj2.isPresent()){
+            MsgRelation msgRelation = obj2.get();
+            Long id1 = msgRelation.getMsg1();
+            Optional<MsgLog> temp1 = swiftService.getSelectedId(id1);
+            MsgLog relObj1 = temp1.get();
+
+            Long id2 = msgRelation.getMsg2();
+            Optional<MsgLog> temp2 = swiftService.getSelectedId(id2);
+            MsgLog relObj2 = temp2.get();
+
+            responseList = new ArrayList<MsgLog>(List.of(relObj1, relObj2));
+        }
+        else {
+            responseList = new ArrayList<MsgLog>();
         }
 
         return responseList;
     }
-
-    private String findPlusIndices(String source) {
-        StringBuilder res = new StringBuilder();
-        for(int i = 0; i < source.length(); i++){
-            if(source.charAt(i) == '+'){
-                res.append(i);
-                res.append(",");
-            }
-        }
-        if( res.length() == 0) return "NoPlus";
-        return res.toString();
-    }
-
-    // You can add more methods for CRUD operations
 
 }

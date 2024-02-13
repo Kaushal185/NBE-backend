@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.grs.angproject.user.Users;
@@ -18,11 +20,12 @@ public class MsgLogServiceImpl implements MsgLogService {
     MsgLogRepository msgLogRepository;
 
    @Override
-   public Page<MsgLog> getUsers(int page, int pageSize) {
-       PageRequest pageRequest = PageRequest.of(page, pageSize);
-       return msgLogRepository.findAll(pageRequest);
+   public Page<MsgLog> getUsersSort(int page, int pageSize, Sort sort, String messageType) {
+       PageRequest pageRequest = PageRequest.of(page, pageSize, sort);
+       return msgLogRepository.findByMessageType(messageType, pageRequest);
    }
     
+   @Override
     public List<MsgLog> getAllRecords() {
     	return msgLogRepository.findAll();
     }
@@ -45,11 +48,12 @@ public class MsgLogServiceImpl implements MsgLogService {
         return msgLogRepository.findAll(pageRequest);
     }
 
-    // @Override
-    // public List<MsgLog> getSearchData(String messageType, String status, Timestamp from, Timestamp to) {
-    //     // return msgLogRepository.customQ(messageType, status, from, to);
-    //     return msgLogRepository.findByMessageTypeAndStatusAndCreatedOnBetween(messageType, status, null, null);
-    // }
+    @Override
+    public Page<MsgLog> getSearchData(String messageType, String identifier, String status, String from, String to, int page, int pageSize, Sort sort) {
+        PageRequest pageRequest = PageRequest.of(page, pageSize, sort);
+        return msgLogRepository.findByMessageTypeAndIdentifierAndStatusAndCreatedOnBetween(messageType, identifier, status, from, to, pageRequest);
+        // return msgLogRepository.findByMessageTypeAndStatusAndCreatedOnBetween(identifier, status, from, to);
+    }
  
 }
 

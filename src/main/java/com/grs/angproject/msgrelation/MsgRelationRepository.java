@@ -12,4 +12,7 @@ public interface MsgRelationRepository extends JpaRepository<MsgRelation, Long> 
 
     @Query(value = "SELECT * FROM rmwb.msg_relation WHERE MSG1 = :id", nativeQuery = true)
     Optional<MsgRelation> customQueryByMsg1(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM rmwb.msg_relation WHERE MSG2 = :id", nativeQuery = true)
+    Optional<MsgRelation> customQueryByMsg2(@Param("id") Long id);
 }

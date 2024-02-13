@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,51 +35,65 @@ public class MsgLogController {
     @Autowired
     private MsgLogService msgLogService;
 
-   @GetMapping("/pg")
+    // get paginated data
+   @GetMapping("/initialPage")
    public Page<MsgLog> getUsers(
            @RequestParam(defaultValue = "0") int page,
-           @RequestParam(defaultValue = "100") int pageSize) {
-       return msgLogService.getUsers(page, pageSize);
+           @RequestParam(defaultValue = "100") int pageSize,
+           @RequestParam(defaultValue = "MX") String messageType) {
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdOn");
+       return msgLogService.getUsersSort(page, pageSize, sort, messageType);
    }
     
+   // to test api in postman
     @GetMapping("/all")
     public List<MsgLog> getAllRecords() {
         return msgLogService.getAllRecords();
     }
 
+    // load more records button call - replace with Pagination
     @GetMapping("/loadMore")
     public Page<MsgLog> getMoreRecords(@RequestParam int page, @RequestParam(defaultValue = "100") int size) {
         return msgLogService.getMoreRecords(page, size);
     }
     
+    // search record by id - not in use
     @PostMapping("/id")
     public Optional<MsgLog> getSelectedId(@RequestBody MsgLog record) {
     	return msgLogService.getSelectedId(record.getId());
     }
 
-    @GetMapping("/search")
-     public ResponseEntity<?> getMethodName(@RequestParam Long id) {
-        Optional<MsgLog> swiftModelOptional = msgLogService.getSelectedId(id);
-
-        if (swiftModelOptional.isPresent()) {
-            return ResponseEntity.ok(swiftModelOptional.get());
-        } else {
-            String notFoundMessage = "Record with ID " + id + " not found.";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(notFoundMessage); // You can customize the body or provide additional information
-        }
-    
-     }
-
-    //  @GetMapping("/search2")
-    //  public ResponseEntity<?> getSearchId(
-    //     @RequestParam(defaultValue = "") String messageType,
-    //     @RequestParam(defaultValue = "") String status,
-    //     @RequestParam(defaultValue = "") Timestamp from,
-    //     @RequestParam(defaultValue = "") Timestamp to
-    //     ) {
-    //         List<MsgLog> swiftModelData = msgLogService.getSearchData(messageType, status, from, to);
-    //      return  ResponseEntity.ok(swiftModelData);
+    // @GetMapping("/search")
+    //  public ResponseEntity<?> getMethodName(@RequestParam Long id) {
+    //     Optional<MsgLog> msgLogOptional = msgLogService.getSelectedId(id);
+    //     if (msgLogOptional.isPresent()) {
+    //         return ResponseEntity.ok(msgLogOptional.get());
+    //     } else {
+    //         String notFoundMessage = "Record with ID " + id + " not found.";
+    //         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+    //                 .body(notFoundMessage); // You can customize the body or provide additional information
+    //     }
     //  }
+
+     @GetMapping("/search")
+     public ResponseEntity<?> getSearchId(
+        @RequestParam(defaultValue = "MX") String messageType,
+        @RequestParam(defaultValue = "") String identifier,
+        @RequestParam(defaultValue = "") String status,
+        @RequestParam(defaultValue = "") String from,
+        @RequestParam(defaultValue = "") String to,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "15") int pageSize
+        ) {
+            Sort sort = Sort.by(Sort.Direction.DESC, "createdOn");
+            Page<MsgLog> swiftModelData = msgLogService.getSearchData(messageType, identifier, status, from, to, page, pageSize, sort);
+            if (!swiftModelData.isEmpty()){
+         return  ResponseEntity.ok(swiftModelData);
+            } else {
+                String notFoundMessage = "No Records found.";
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFoundMessage);
+            }
+     }
      
 }

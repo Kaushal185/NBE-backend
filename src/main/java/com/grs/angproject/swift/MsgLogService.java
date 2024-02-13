@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 
 public interface MsgLogService {
 
-   Page<MsgLog> getUsers(int page, int pageSize);
+   Page<MsgLog> getUsersSort(int page, int pageSize, Sort sort, String messageType);
     
     List<MsgLog> getAllRecords();
     
@@ -18,5 +19,5 @@ public interface MsgLogService {
 
     Page<MsgLog> getMoreRecords(int page, int size);
 
-    // List<MsgLog> getSearchData(String messageType, String status, Timestamp from, Timestamp to);
+    Page<MsgLog> getSearchData(String messageType, String identifier, String status, String from, String to, int page, int pageSize, Sort sort);
 }

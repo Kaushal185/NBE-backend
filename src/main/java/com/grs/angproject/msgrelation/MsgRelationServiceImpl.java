@@ -23,8 +23,13 @@ public class MsgRelationServiceImpl implements MsgRelationService {
     }
 
     @Override
-    public Optional<MsgRelation> getMsgRelationObject(Long id) {
+    public Optional<MsgRelation> getMsg1RelationObject(Long id) {
         return msgRelationRepository.customQueryByMsg1(id);
+    }
+
+    @Override
+    public Optional<MsgRelation> getMsg2RelationObject(Long id) {
+        return msgRelationRepository.customQueryByMsg2(id);
     }
 
 }

@@ -14,29 +14,48 @@ import org.springframework.data.repository.query.Param;
 
 public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 
-   	// Page<SwiftModel> findAll(Pageable pageable);
-	
+	// List<MsgLog> findAll();
+
+	// @Query(
+	// 	"SELECT m FROM MsgLog m " +
+	// 	"WHERE (:messageType IS NULL) " +
+	// 	"ORDER BY m.createdOn DESC"
+	// )
+	Page<MsgLog> findByMessageType(String messageType, Pageable pageable);
+
 	Optional<MsgLog> findById(Long id);
 
 	Optional<MsgLog> findMessageById(Long id);
 
-	@Query(value =
-	 "SELECT * FROM RMWB.MSG_LOG WHERE (MESSAGE_TYPE = :messageType OR :messageType IS NULL) AND (STATUS = :status OR :status IS NULL) AND (CREATED_ON >= to_timestamp(:from,'DD-MM-YY') OR :from IS NULL) AND (CREATED_ON < to_timestamp(:to,'DD-MM-YY') OR :to IS NULL) ORDER BY CREATED_ON DESC",
-	  nativeQuery = true)
-	List<MsgLog> customQ(@Param("messageType") String messageType, @Param("status") String status, @Param("from") String from, @Param("to") String end);
+	@Query(
+	 "SELECT m FROM MsgLog m " +
+	 "WHERE (UPPER(m.messageType) = UPPER(:messageType) OR :messageType IS NULL) " +
+	 "AND (UPPER(m.identifier) = UPPER(:identifier) OR :identifier IS NULL) " +
+	 "AND (UPPER(m.status) = UPPER(:status) OR :status IS NULL) " +
+	 "AND (m.createdOn >= to_timestamp(:from,'YYYY-MM-DD') OR :from IS NULL) " +
+	 "AND (m.createdOn < to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) "+ 
+	 "ORDER BY m.createdOn DESC")
+	Page<MsgLog> findByMessageTypeAndIdentifierAndStatusAndCreatedOnBetween(
+		@Param("messageType") String messageType,
+		@Param("identifier") String identifier, 
+		@Param("status") String status, 
+		@Param("from") String from, 
+		@Param("to") String to,
+		Pageable pageable
+		);
 
-// 	@Query("SELECT m FROM MsgLog m " +
-//             "WHERE (:messageType IS NULL OR m.messageType = :messageType) " +
-//             "AND (:status IS NULL OR m.status = :status) " +
-//             "AND (:from IS NULL OR m.createdOn >= :from) " +
-//             "AND (:to IS NULL OR m.createdOn < :to) " +
-//             "ORDER BY m.createdOn DESC")
-//     List<MsgLog> findByMessageTypeAndStatusAndCreatedOnBetween(
-//             @Param("messageType") String messageType,
-//             @Param("status") String status,
-//             @Param("from") Timestamp from,
-//             @Param("to") LocalDateTime to
-//     );
+	// @Query("SELECT m FROM MsgLog m " +
+    //         "WHERE (:messageType IS NULL OR m.messageType = :messageType) " +
+    //         "AND (:status IS NULL OR m.status = :status) " +
+    //         "AND (:from IS NULL OR m.createdOn >= :from) " +
+    //         "AND (:to IS NULL OR m.createdOn < :to) " +
+    //         "ORDER BY m.createdOn DESC")
+    // List<MsgLog> findByMessageTypeAndStatusAndCreatedOnBetween(
+    //         @Param("messageType") String messageType,
+    //         @Param("status") String status,
+    //         @Param("from") Timestamp from,
+    //         @Param("to") Timestamp to
+    // );
 
 
     
