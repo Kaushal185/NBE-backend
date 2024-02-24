@@ -95,5 +95,24 @@ public class MsgLogController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFoundMessage);
             }
      }
+
+
+     @GetMapping("/filtered")
+    public ResponseEntity<?> findByFilterForListToExcel(
+            @RequestParam(defaultValue = "MX") String messageType,
+            @RequestParam(defaultValue = "") String identifier,
+            @RequestParam(defaultValue = "") String status,
+            @RequestParam(defaultValue = "") String from,
+            @RequestParam(defaultValue = "") String to
+    ) {
+//        Sort sort = Sort.by(Sort.Direction.DESC, "createdOn");
+        List<MsgLogExport> swiftModelData = msgLogService.getFilteredForListToExcel(messageType, identifier, status, from, to);
+        if (!swiftModelData.isEmpty()){
+            return  ResponseEntity.ok(swiftModelData);
+        } else {
+            String notFoundMessage = "No Records found.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFoundMessage);
+        }
+    }
      
 }

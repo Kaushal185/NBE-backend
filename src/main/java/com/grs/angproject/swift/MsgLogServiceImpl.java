@@ -19,24 +19,24 @@ public class MsgLogServiceImpl implements MsgLogService {
     @Autowired
     MsgLogRepository msgLogRepository;
 
-   @Override
-   public Page<MsgLog> getUsersSort(int page, int pageSize, Sort sort, String messageType) {
-       PageRequest pageRequest = PageRequest.of(page, pageSize, sort);
-       return msgLogRepository.findByMessageType(messageType, pageRequest);
-   }
-    
-   @Override
-    public List<MsgLog> getAllRecords() {
-    	return msgLogRepository.findAll();
-    }
-     
     @Override
-    public Optional<MsgLog> getSelectedId(Long id){
-    	return msgLogRepository.findById(id);
+    public Page<MsgLog> getUsersSort(int page, int pageSize, Sort sort, String messageType) {
+        PageRequest pageRequest = PageRequest.of(page, pageSize, sort);
+        return msgLogRepository.findByMessageType(messageType, pageRequest);
     }
 
     @Override
-    public Optional<MsgLog> getMessageById(Long id){
+    public List<MsgLog> getAllRecords() {
+        return msgLogRepository.findAll();
+    }
+
+    @Override
+    public Optional<MsgLog> getSelectedId(Long id) {
+        return msgLogRepository.findById(id);
+    }
+
+    @Override
+    public Optional<MsgLog> getMessageById(Long id) {
         return msgLogRepository.findMessageById(id);
     }
 
@@ -49,11 +49,20 @@ public class MsgLogServiceImpl implements MsgLogService {
     }
 
     @Override
-    public Page<MsgLog> getSearchData(String messageType, String identifier, String status, String from, String to, int page, int pageSize, Sort sort) {
+    public Page<MsgLog> getSearchData(String messageType, String identifier, String status, String from, String to,
+            int page, int pageSize, Sort sort) {
         PageRequest pageRequest = PageRequest.of(page, pageSize, sort);
-        return msgLogRepository.findByMessageTypeAndIdentifierAndStatusAndCreatedOnBetween(messageType, identifier, status, from, to, pageRequest);
-        // return msgLogRepository.findByMessageTypeAndStatusAndCreatedOnBetween(identifier, status, from, to);
+        return msgLogRepository.findByMessageTypeAndIdentifierAndStatusAndCreatedOnBetween(messageType, identifier,
+                status, from, to, pageRequest);
+        // return
+        // msgLogRepository.findByMessageTypeAndStatusAndCreatedOnBetween(identifier,
+        // status, from, to);
     }
- 
-}
 
+    @Override
+    public List<MsgLogExport> getFilteredForListToExcel(String messageType, String identifier, String status,
+            String from, String to) {
+        return msgLogRepository.getFilteredForListToExcel(messageType, identifier, status, from, to);
+    }
+
+}
