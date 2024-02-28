@@ -22,7 +22,7 @@ import com.grs.angproject.user.Users;
 
 @RestController
 @RequestMapping("/api/swift")
-@CrossOrigin(origins = "http://localhost:5000")
+@CrossOrigin(origins = "http://localhost:4200")
 public class MsgLogController {
 
     // private final SwiftService swiftService;

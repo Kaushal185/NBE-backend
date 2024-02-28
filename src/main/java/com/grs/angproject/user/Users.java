@@ -22,5 +22,12 @@ public class Users {
     private String lastName;
     private String status;
     private String password;
-    
+
+    public String getUserId() {
+        return this.userId;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
 }
