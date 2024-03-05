@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @SpringBootApplication
 public class AngprojectApplication implements CommandLineRunner {
-
 	private final JdbcTemplate jdbcTemplate;
 
 	public AngprojectApplication(JdbcTemplate jdbcTemplate) {

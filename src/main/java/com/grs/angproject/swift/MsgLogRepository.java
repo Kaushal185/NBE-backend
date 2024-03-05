@@ -33,7 +33,7 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 	 "AND (UPPER(m.identifier) = UPPER(:identifier) OR :identifier IS NULL) " +
 	 "AND (UPPER(m.status) = UPPER(:status) OR :status IS NULL) " +
 	 "AND (m.createdOn >= to_timestamp(:from,'YYYY-MM-DD') OR :from IS NULL) " +
-	 "AND (m.createdOn < to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) "+ 
+	 "AND (m.createdOn <= to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) "+
 	 "ORDER BY m.createdOn DESC")
 	Page<MsgLog> findByMessageTypeAndIdentifierAndStatusAndCreatedOnBetween(
 		@Param("messageType") String messageType,
@@ -51,7 +51,7 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 					"AND (UPPER(m.identifier) = UPPER(:identifier) OR :identifier IS NULL) " +
 					"AND (UPPER(m.status) = UPPER(:status) OR :status IS NULL) " +
 					"AND (m.createdOn >= to_timestamp(:from,'YYYY-MM-DD') OR :from IS NULL) " +
-					"AND (m.createdOn < to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) " +
+					"AND (m.createdOn <= to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) " +
 					"ORDER BY m.createdOn DESC"
 					// Add the limit clause for MySQL
 					+ " LIMIT 1000"
