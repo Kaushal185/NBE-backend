@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.domain.Page;
@@ -63,6 +64,20 @@ public class MsgLogController {
     public Optional<MsgLog> getSelectedId(@RequestBody MsgLog record) {
     	return msgLogService.getSelectedId(record.getId());
     }
+
+    @GetMapping("/ref")
+    public ResponseEntity<?> getSingleId(@RequestParam String id) {
+        Optional<MsgLog> record = msgLogService.getSingleId(id);
+        if(record.isPresent()){
+            return ResponseEntity.ok(record.get());
+        } else {
+            String notFoundMessage = "Records with Reference " + id + " not found.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(notFoundMessage);
+        }
+        // return msgLogService.getSingleId(id);
+    }
+    
 
     // @GetMapping("/search")
     //  public ResponseEntity<?> getMethodName(@RequestParam Long id) {

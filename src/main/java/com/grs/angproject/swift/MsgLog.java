@@ -55,5 +55,8 @@ public class MsgLog {
     private String message;
 //    private String source;
 
+    @Column(name = "REFERENCE")
+    private String reference;
+
     // Constructors, getters, and setters
 }
