@@ -30,6 +30,7 @@ public class MsgRelationController {
         ArrayList<MsgLog> responseList; //
         Optional<MsgRelation> obj1 = msgRelationService.getMsg1RelationObject(id);
         Optional<MsgRelation> obj2 = msgRelationService.getMsg2RelationObject(id);
+        Optional<MsgLog> finalObj = swiftService.getSelectedId(id);
         if (obj1.isPresent()) {
             Optional<MsgLog> temp = swiftService.getSelectedId(id);
             MsgLog relObj1 = temp.get();
@@ -54,8 +55,11 @@ public class MsgRelationController {
             MsgLog relObj2 = temp2.get();
 
             responseList = new ArrayList<MsgLog>(List.of(relObj1, relObj2));
-        }
-        else {
+        } else if (finalObj.isPresent()) {
+            MsgLog relObj1 = finalObj.get();
+
+            responseList = new ArrayList<MsgLog>(List.of(relObj1));
+        } else {
             responseList = new ArrayList<MsgLog>();
         }
 

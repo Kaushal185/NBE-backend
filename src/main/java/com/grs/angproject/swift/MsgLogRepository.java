@@ -23,7 +23,10 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 	// )
 	Page<MsgLog> findByMessageType(String messageType, Pageable pageable);
 
-	Optional<MsgLog> findById(Long id);
+	@Query(
+		"SELECT m FROM MsgLog m WHERE m.reference = :id"
+	)
+	Optional<MsgLog> findByReference(@Param("id") String id);
 
 	Optional<MsgLog> findMessageById(Long id);
 
