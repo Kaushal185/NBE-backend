@@ -27,7 +27,7 @@ import com.grs.angproject.user.Users;
 
 @RestController
 @RequestMapping("/api/login")
-@CrossOrigin(origins = "http://localhost:5000")
+@CrossOrigin(origins = "http://localhost:4200")
 public class LoginController {
     @Autowired
     private UserRepository userRepository;
@@ -49,27 +49,5 @@ public class LoginController {
         }
     }
 
-    // @Autowired
-    // private UserRepository userRepository;
-
-    // @GetMapping("/login")
-    // public String showLoginForm() {
-    //     return "login";
-    // }
-
-    // @PostMapping("/login")
-    // public String login(String user_id, String password, Model model) {
-    //     // Simulate authentication logic
-    //     User user = userRepository.findByUser_id(user_id).orElse(null);
-
-    //     if (user != null && user.getPassword().equals(password)) {
-    //         // Successful login
-    //         return "redirect:/dashboard";
-    //     } else {
-    //         // Failed login
-    //         model.addAttribute("error", "Invalid user_id or password");
-    //         return "login";
-    //     }
-    // }
 }
 
