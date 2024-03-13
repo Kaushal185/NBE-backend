@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class Users {
+public class User {
 
     @Id
     private String userId;  // Assuming user_id is a string

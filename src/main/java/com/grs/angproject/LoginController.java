@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.grs.angproject.user.UserRepository;
-import com.grs.angproject.user.Users;
+import com.grs.angproject.user.User;
 
 
 
@@ -33,13 +33,13 @@ public class LoginController {
     private UserRepository userRepository;
 
     @GetMapping("/get")
-    public List<Users> getAllUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @PostMapping("/post")
-    public ResponseEntity<String> login(@RequestBody Users user) {
-        Optional<Users> existingUser = userRepository.findByUserId(user.getUserId());
+    public ResponseEntity<String> login(@RequestBody User user) {
+        Optional<User> existingUser = userRepository.findByUserId(user.getUserId());
 
         if (existingUser.isPresent() && existingUser.get().getPassword().equals(user.getPassword())) {
         	return ResponseEntity.status(HttpStatus.OK).body("SPRING: Login Successful");

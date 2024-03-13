@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.grs.angproject.user.Users;
+import com.grs.angproject.user.User;
 
 @Service
 public class MsgLogServiceImpl implements MsgLogService {
