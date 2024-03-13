@@ -29,33 +29,33 @@ public class UserController {
         return userRepository.findAll();
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(@RequestBody Users user) {
-//        Optional<Users> existingUser = userRepository.findByUserId(user.getUserId());
-//
-//        if (existingUser.isPresent() && existingUser.get().getPassword().equals(user.getPassword())) {
-//            return ResponseEntity.status(HttpStatus.OK).body("SPRING: Login Successful");
-//        } else {
-//            // return "Login failed";
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("SPRING: Login Failed");
-//        }
-//
-//    }
-@Autowired
-private JwtUtil jwtUtil;
-
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Users user) {
-        System.out.println("");
         Optional<Users> existingUser = userRepository.findByUserId(user.getUserId());
-        System.out.println("api hit");
+
         if (existingUser.isPresent() && existingUser.get().getPassword().equals(user.getPassword())) {
-            String token = jwtUtil.generateToken(user.getUserId());
-            return ResponseEntity.status(HttpStatus.OK).body(token);
+            return ResponseEntity.status(HttpStatus.OK).body("SPRING: Login Successful");
         } else {
-            System.out.println("else here");
+            // return "Login failed";
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("SPRING: Login Failed");
         }
+
     }
+//@Autowired
+//private JwtUtil jwtUtil;
+//
+//    @RequestMapping(value = "/login",method = RequestMethod.POST)
+//    public ResponseEntity<String> login(@RequestBody Users user) {
+//        System.out.println("");
+//        Optional<Users> existingUser = userRepository.findByUserId(user.getUserId());
+//        System.out.println("api hit");
+//        if (existingUser.isPresent() && existingUser.get().getPassword().equals(user.getPassword())) {
+//            String token = jwtUtil.generateToken(user.getUserId());
+//            return ResponseEntity.status(HttpStatus.OK).body(token);
+//        } else {
+//            System.out.println("else here");
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("SPRING: Login Failed");
+//        }
+//    }
 
 }
