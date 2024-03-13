@@ -23,34 +23,30 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 	// )
 	Page<MsgLog> findByMessageType(String messageType, Pageable pageable);
 
-	@Query(
-		"SELECT m FROM MsgLog m WHERE m.reference = :reference"
-	)
-	Optional<MsgLog> findByReference(@Param("reference") String reference);
+	Optional<MsgLog> findById(Long id);
 
 	Optional<MsgLog> findMessageById(Long id);
 
 	@Query(
-	 "SELECT m FROM MsgLog m " +
-	 "WHERE (UPPER(m.messageType) = UPPER(:messageType) OR :messageType IS NULL) " +
-	 "AND (UPPER(m.identifier) = UPPER(:identifier) OR :identifier IS NULL) " +
-	 "AND (UPPER(m.status) = UPPER(:status) OR :status IS NULL) " +
-	 "AND (m.createdOn >= to_timestamp(:from,'YYYY-MM-DD') OR :from IS NULL) " +
-	 "AND (m.createdOn <= to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) "+
-	 "ORDER BY m.createdOn DESC")
+			"SELECT m FROM MsgLog m " +
+					"WHERE (UPPER(m.messageType) = UPPER(:messageType) OR :messageType IS NULL) " +
+					"AND (UPPER(m.identifier) = UPPER(:identifier) OR :identifier IS NULL) " +
+					"AND (UPPER(m.status) = UPPER(:status) OR :status IS NULL) " +
+					"AND (m.createdOn >= to_timestamp(:from,'YYYY-MM-DD') OR :from IS NULL) " +
+					"AND (m.createdOn <= to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) "+
+					"ORDER BY m.createdOn DESC")
 	Page<MsgLog> findByMessageTypeAndIdentifierAndStatusAndCreatedOnBetween(
-		@Param("messageType") String messageType,
-		@Param("identifier") String identifier,
-		@Param("status") String status,
-		@Param("from") String from,
-		@Param("to") String to,
-		Pageable pageable
-		);
+			@Param("messageType") String messageType,
+			@Param("identifier") String identifier,
+			@Param("status") String status,
+			@Param("from") String from,
+			@Param("to") String to,
+			Pageable pageable
+	);
 
 
 	@Query(
 			"SELECT m FROM MsgLogExport m " +
-<<<<<<< HEAD
 					"WHERE (UPPER(m.messageType) = UPPER(:messageType) OR :messageType IS NULL) " +
 					"AND (UPPER(m.identifier) = UPPER(:identifier) OR :identifier IS NULL) " +
 					"AND (UPPER(m.status) = UPPER(:status) OR :status IS NULL) " +
@@ -61,16 +57,6 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 					+ " LIMIT 1000"
 	)
 	List<MsgLogExport> getFilteredForListToExcel(
-=======
-				  "WHERE (UPPER(m.messageType) = UPPER(:messageType) OR :messageType IS NULL) " +
-				  "AND (UPPER(m.identifier) = UPPER(:identifier) OR :identifier IS NULL) " +
-				  "AND (UPPER(m.status) = UPPER(:status) OR :status IS NULL) " +
-				  "AND (m.createdOn >= to_timestamp(:from,'YYYY-MM-DD') OR :from IS NULL) " +
-				  "AND (m.createdOn < to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) " +
-				  "ORDER BY m.createdOn DESC " +
-				  "LIMIT 1000")
-	 List<MsgLogExport> getFilteredForListToExcel(
->>>>>>> e937e6cc8ca8f264a1cab3e977b3a02351d8bab1
 			@Param("messageType") String messageType,
 			@Param("identifier") String identifier,
 			@Param("status") String status,
@@ -80,18 +66,16 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 
 
 	// @Query("SELECT m FROM MsgLog m " +
-    //         "WHERE (:messageType IS NULL OR m.messageType = :messageType) " +
-    //         "AND (:status IS NULL OR m.status = :status) " +
-    //         "AND (:from IS NULL OR m.createdOn >= :from) " +
-    //         "AND (:to IS NULL OR m.createdOn < :to) " +
-    //         "ORDER BY m.createdOn DESC")
-    // List<MsgLog> findByMessageTypeAndStatusAndCreatedOnBetween(
-    //         @Param("messageType") String messageType,
-    //         @Param("status") String status,
-    //         @Param("from") Timestamp from,
-    //         @Param("to") Timestamp to
-    // );
+	//         "WHERE (:messageType IS NULL OR m.messageType = :messageType) " +
+	//         "AND (:status IS NULL OR m.status = :status) " +
+	//         "AND (:from IS NULL OR m.createdOn >= :from) " +
+	//         "AND (:to IS NULL OR m.createdOn < :to) " +
+	//         "ORDER BY m.createdOn DESC")
+	// List<MsgLog> findByMessageTypeAndStatusAndCreatedOnBetween(
+	//         @Param("messageType") String messageType,
+	//         @Param("status") String status,
+	//         @Param("from") Timestamp from,
+	//         @Param("to") Timestamp to
+	// );
 
-
-    
 }
