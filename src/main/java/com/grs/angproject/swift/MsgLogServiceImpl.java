@@ -36,8 +36,8 @@ public class MsgLogServiceImpl implements MsgLogService {
     }
 
     @Override
-    public Optional<MsgLog> getSingleId(String id){
-        return msgLogRepository.findByReference(id);
+    public Optional<MsgLog> getSingleId(String reference){
+        return msgLogRepository.findByReference(reference);
     }
 
     @Override

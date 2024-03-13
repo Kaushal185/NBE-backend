@@ -24,9 +24,9 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 	Page<MsgLog> findByMessageType(String messageType, Pageable pageable);
 
 	@Query(
-		"SELECT m FROM MsgLog m WHERE m.reference = :id"
+		"SELECT m FROM MsgLog m WHERE m.reference = :reference"
 	)
-	Optional<MsgLog> findByReference(@Param("id") String id);
+	Optional<MsgLog> findByReference(@Param("reference") String reference);
 
 	Optional<MsgLog> findMessageById(Long id);
 
@@ -55,7 +55,8 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 				  "AND (UPPER(m.status) = UPPER(:status) OR :status IS NULL) " +
 				  "AND (m.createdOn >= to_timestamp(:from,'YYYY-MM-DD') OR :from IS NULL) " +
 				  "AND (m.createdOn < to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) " +
-				  "ORDER BY m.createdOn DESC")
+				  "ORDER BY m.createdOn DESC " +
+				  "LIMIT 1000")
 	 List<MsgLogExport> getFilteredForListToExcel(
 			@Param("messageType") String messageType,
 			@Param("identifier") String identifier,
