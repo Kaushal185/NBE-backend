@@ -15,7 +15,7 @@ public interface MsgLogService {
 
     Optional<MsgLog> getSelectedId(Long id);
 
-    Optional<MsgLog> getSingleId(String id);
+    Optional<MsgLog> getSingleId(String reference);
 
     Optional<MsgLog> getMessageById(Long id);
 

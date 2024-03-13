@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.grs.angproject.user.Users;
+import com.grs.angproject.user.User;
 
 @RestController
 @RequestMapping("/api/swift")
@@ -30,24 +30,24 @@ public class MsgLogController {
 
     // @Autowired
     // public SwiftController(SwiftService swiftService) {
-    //     this.swiftService = swiftService;
+    // this.swiftService = swiftService;
     // }
 
     @Autowired
     private MsgLogService msgLogService;
 
     // get paginated data
-   @GetMapping("/initialPage")
-   public Page<MsgLog> getUsers(
-           @RequestParam(defaultValue = "0") int page,
-           @RequestParam(defaultValue = "100") int pageSize,
-           @RequestParam(defaultValue = "MX") String messageType) {
+    @GetMapping("/initialPage")
+    public Page<MsgLog> getUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "100") int pageSize,
+            @RequestParam(defaultValue = "MX") String messageType) {
 
         Sort sort = Sort.by(Sort.Direction.DESC, "createdOn");
-       return msgLogService.getUsersSort(page, pageSize, sort, messageType);
-   }
-    
-   // to test api in postman
+        return msgLogService.getUsersSort(page, pageSize, sort, messageType);
+    }
+
+    // to test api in postman
     @GetMapping("/all")
     public List<MsgLog> getAllRecords() {
         return msgLogService.getAllRecords();
@@ -58,76 +58,78 @@ public class MsgLogController {
     public Page<MsgLog> getMoreRecords(@RequestParam int page, @RequestParam(defaultValue = "100") int size) {
         return msgLogService.getMoreRecords(page, size);
     }
-    
+
     // search record by id - not in use
     @PostMapping("/id")
     public Optional<MsgLog> getSelectedId(@RequestBody MsgLog record) {
-    	return msgLogService.getSelectedId(record.getId());
+        return msgLogService.getSelectedId(record.getId());
     }
 
+    // search using unique reference number
     @GetMapping("/ref")
-    public ResponseEntity<?> getSingleId(@RequestParam String id) {
-        Optional<MsgLog> record = msgLogService.getSingleId(id);
-        if(record.isPresent()){
+    public ResponseEntity<?> getSingleId(@RequestParam String reference) {
+        Optional<MsgLog> record = msgLogService.getSingleId(reference);
+        if (record.isPresent()) {
             return ResponseEntity.ok(record.get());
         } else {
-            String notFoundMessage = "Records with Reference " + id + " not found.";
+            String notFoundMessage = "Record with Reference " + reference + " not found.";
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body(notFoundMessage);
+                    .body(notFoundMessage);
         }
         // return msgLogService.getSingleId(id);
     }
-    
 
     // @GetMapping("/search")
-    //  public ResponseEntity<?> getMethodName(@RequestParam Long id) {
-    //     Optional<MsgLog> msgLogOptional = msgLogService.getSelectedId(id);
-    //     if (msgLogOptional.isPresent()) {
-    //         return ResponseEntity.ok(msgLogOptional.get());
-    //     } else {
-    //         String notFoundMessage = "Record with ID " + id + " not found.";
-    //         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-    //                 .body(notFoundMessage); // You can customize the body or provide additional information
-    //     }
-    //  }
+    // public ResponseEntity<?> getMethodName(@RequestParam Long id) {
+    // Optional<MsgLog> msgLogOptional = msgLogService.getSelectedId(id);
+    // if (msgLogOptional.isPresent()) {
+    // return ResponseEntity.ok(msgLogOptional.get());
+    // } else {
+    // String notFoundMessage = "Record with ID " + id + " not found.";
+    // return ResponseEntity.status(HttpStatus.NOT_FOUND)
+    // .body(notFoundMessage); // You can customize the body or provide additional
+    // information
+    // }
+    // }
 
-     @GetMapping("/search")
-     public ResponseEntity<?> getSearchId(
-        @RequestParam(defaultValue = "MX") String messageType,
-        @RequestParam(defaultValue = "") String identifier,
-        @RequestParam(defaultValue = "") String status,
-        @RequestParam(defaultValue = "") String from,
-        @RequestParam(defaultValue = "") String to,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "15") int pageSize
-        ) {
-            Sort sort = Sort.by(Sort.Direction.DESC, "createdOn");
-            Page<MsgLog> swiftModelData = msgLogService.getSearchData(messageType, identifier, status, from, to, page, pageSize, sort);
-            if (!swiftModelData.isEmpty()){
-         return  ResponseEntity.ok(swiftModelData);
-            } else {
-                String notFoundMessage = "No Records found.";
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFoundMessage);
-            }
-     }
-
-
-     @GetMapping("/filtered")
-    public ResponseEntity<?> findByFilterForListToExcel(
+    // filtered search
+    @GetMapping("/search")
+    public ResponseEntity<?> getSearchId(
             @RequestParam(defaultValue = "MX") String messageType,
             @RequestParam(defaultValue = "") String identifier,
             @RequestParam(defaultValue = "") String status,
             @RequestParam(defaultValue = "") String from,
-            @RequestParam(defaultValue = "") String to
-    ) {
-//        Sort sort = Sort.by(Sort.Direction.DESC, "createdOn");
-        List<MsgLogExport> swiftModelData = msgLogService.getFilteredForListToExcel(messageType, identifier, status, from, to);
-        if (!swiftModelData.isEmpty()){
-            return  ResponseEntity.ok(swiftModelData);
+            @RequestParam(defaultValue = "") String to,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "15") int pageSize) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdOn");
+        Page<MsgLog> swiftModelData = msgLogService.getSearchData(messageType, identifier, status, from, to, page,
+                pageSize, sort);
+        if (!swiftModelData.isEmpty()) {
+            return ResponseEntity.ok(swiftModelData);
         } else {
             String notFoundMessage = "No Records found.";
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFoundMessage);
         }
     }
-     
+
+    // fetch to export
+    @GetMapping("/export")
+    public ResponseEntity<?> findByFilterForListToExcel(
+            @RequestParam(defaultValue = "MX") String messageType,
+            @RequestParam(defaultValue = "") String identifier,
+            @RequestParam(defaultValue = "") String status,
+            @RequestParam(defaultValue = "") String from,
+            @RequestParam(defaultValue = "") String to) {
+        // Sort sort = Sort.by(Sort.Direction.DESC, "createdOn");
+        List<MsgLogExport> swiftModelData = msgLogService.getFilteredForListToExcel(messageType, identifier, status,
+                from, to);
+        if (!swiftModelData.isEmpty()) {
+            return ResponseEntity.ok(swiftModelData);
+        } else {
+            String notFoundMessage = "No Records found.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFoundMessage);
+        }
+    }
+
 }

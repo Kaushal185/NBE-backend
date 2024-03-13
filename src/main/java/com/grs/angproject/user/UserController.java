@@ -27,13 +27,13 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping("/get")
-    public List<Users> getAllUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Users user) {
-        Optional<Users> existingUser = userRepository.findByUserId(user.getUserId());
+    public ResponseEntity<String> login(@RequestBody User user) {
+        Optional<User> existingUser = userRepository.findByUserId(user.getUserId());
 
         if (existingUser.isPresent() && existingUser.get().getPassword().equals(user.getPassword())) {
             return ResponseEntity.status(HttpStatus.OK).body("SPRING: Login Successful");
