@@ -39,7 +39,6 @@ public class UserController {
             // return "Login failed";
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("SPRING: Login Failed");
         }
-
     }
 //@Autowired
 //private JwtUtil jwtUtil;
