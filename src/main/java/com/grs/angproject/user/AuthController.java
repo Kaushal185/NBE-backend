@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
     @Autowired
@@ -44,9 +45,9 @@ public class AuthController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    private void doAuthenticate(String email, String password) {
+    private void doAuthenticate(String username, String password) {
 
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, password);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, password);
         try {
             manager.authenticate(authentication);
 

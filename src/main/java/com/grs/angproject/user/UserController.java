@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PostMapping("/login")
+    @PostMapping("/")
     public ResponseEntity<String> login(@RequestBody Users user) {
         Optional<Users> existingUser = userRepository.findByUserId(user.getUserId());
 
