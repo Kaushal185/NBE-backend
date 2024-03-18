@@ -3,9 +3,7 @@ package com.grs.angproject;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.batch.BatchProperties.Jdbc;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @SpringBootApplication
 public class AngprojectApplication implements CommandLineRunner {

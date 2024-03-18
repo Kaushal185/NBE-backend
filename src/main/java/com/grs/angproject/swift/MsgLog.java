@@ -1,7 +1,5 @@
 package com.grs.angproject.swift;
 
-import java.math.BigDecimal;
-import java.sql.Clob;
 import java.sql.Timestamp;
 
 import jakarta.persistence.Column;

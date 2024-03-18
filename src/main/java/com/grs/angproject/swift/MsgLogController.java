@@ -1,12 +1,9 @@
 package com.grs.angproject.swift;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -18,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.grs.angproject.user.User;
 
 @RestController
 @RequestMapping("/api/swift")
