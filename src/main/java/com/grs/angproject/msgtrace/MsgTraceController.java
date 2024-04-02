@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/msg-trace")
-@CrossOrigin(origins = "http://localhost:5000")
+@CrossOrigin
 public class MsgTraceController {
 
     @Autowired

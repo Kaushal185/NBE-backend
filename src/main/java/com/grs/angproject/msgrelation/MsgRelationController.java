@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/msg-relations")
-@CrossOrigin(origins = "http://localhost:5000")
+@CrossOrigin
 public class MsgRelationController {
 
     @Autowired

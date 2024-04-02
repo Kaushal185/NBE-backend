@@ -51,6 +51,10 @@ public class MsgLog {
 
     @Column(name = "MESSAGE")
     private String message;
+
+    public Long getId() {
+        return this.id;
+    }
 //    private String source;
 
     @Column(name = "REFERENCE")

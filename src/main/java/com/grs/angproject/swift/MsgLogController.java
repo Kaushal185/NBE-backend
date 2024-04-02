@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/swift")
-@CrossOrigin(origins = "http://localhost:5000")
+@CrossOrigin
 public class MsgLogController {
 
     // private final SwiftService swiftService;
@@ -30,6 +34,21 @@ public class MsgLogController {
 
     @Autowired
     private MsgLogService msgLogService;
+
+
+    // Handle OPTIONS requests for /api/swift/initialPage endpoint
+    // @RequestMapping(value = "/initialPage", method = RequestMethod.OPTIONS)
+    // @ResponseStatus(HttpStatus.NO_CONTENT)
+    // public void handleOptions(HttpServletResponse response) {
+    //     // Optionally, you can customize the response for OPTIONS requests
+    //     // For example, set CORS headers
+    //     response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+    //     response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    //     response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+    //     response.setHeader("Access-Control-Max-Age", "3600");
+    // }
+
+
 
     // get paginated data
     @GetMapping("/initialPage")

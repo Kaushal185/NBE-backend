@@ -39,5 +39,13 @@ public class MsgRelation implements Serializable {
     @Column(name = "MSG2")
     private Long msg2;
 
+    public Long getMsg1() {
+        return this.msg1;
+    }
+
+    public Long getMsg2() {
+        return this.msg2;
+    }
+
     // Getters and setters
 }

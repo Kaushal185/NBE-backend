@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class User {
+public class Users {
 
     @Id
     private String userId;  // Assuming user_id is a string
@@ -22,5 +22,12 @@ public class User {
     private String lastName;
     private String status;
     private String password;
-    
+
+    public String getUserId() {
+        return this.userId;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
 }

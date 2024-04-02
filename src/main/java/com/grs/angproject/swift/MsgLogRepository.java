@@ -33,7 +33,7 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 	 "AND (UPPER(m.identifier) = UPPER(:identifier) OR :identifier IS NULL) " +
 	 "AND (UPPER(m.status) = UPPER(:status) OR :status IS NULL) " +
 	 "AND (m.createdOn >= to_timestamp(:from,'YYYY-MM-DD') OR :from IS NULL) " +
-	 "AND (m.createdOn < to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) "+ 
+	 "AND (m.createdOn <= to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) "+
 	 "ORDER BY m.createdOn DESC")
 	Page<MsgLog> findByMessageTypeAndIdentifierAndStatusAndCreatedOnBetween(
 		@Param("messageType") String messageType,
@@ -45,7 +45,7 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 		);
 
 
-		@Query(
+	@Query(
 			"SELECT m FROM MsgLogExport m " +
 				  "WHERE (UPPER(m.messageType) = UPPER(:messageType) OR :messageType IS NULL) " +
 				  "AND (UPPER(m.identifier) = UPPER(:identifier) OR :identifier IS NULL) " +
@@ -60,7 +60,8 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 			@Param("status") String status,
 			@Param("from") String from,
 			@Param("to") String to
-	 );
+	);
+
 
 	// @Query("SELECT m FROM MsgLog m " +
     //         "WHERE (:messageType IS NULL OR m.messageType = :messageType) " +

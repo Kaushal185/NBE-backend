@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grs.angproject.user.UserRepository;
-import com.grs.angproject.user.User;
+import com.grs.angproject.user.Users;
 
 
 
@@ -23,19 +23,19 @@ import com.grs.angproject.user.User;
 
 @RestController
 @RequestMapping("/api/login")
-@CrossOrigin(origins = "http://localhost:5000")
+@CrossOrigin
 public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
     @GetMapping("/get")
-    public List<User> getAllUsers() {
+    public List<Users> getAllUsers() {
         return userRepository.findAll();
     }
 
     @PostMapping("/post")
-    public ResponseEntity<String> login(@RequestBody User user) {
-        Optional<User> existingUser = userRepository.findByUserId(user.getUserId());
+    public ResponseEntity<String> login(@RequestBody Users user) {
+        Optional<Users> existingUser = userRepository.findByUserId(user.getUserId());
 
         if (existingUser.isPresent() && existingUser.get().getPassword().equals(user.getPassword())) {
         	return ResponseEntity.status(HttpStatus.OK).body("SPRING: Login Successful");
@@ -45,27 +45,5 @@ public class LoginController {
         }
     }
 
-    // @Autowired
-    // private UserRepository userRepository;
-
-    // @GetMapping("/login")
-    // public String showLoginForm() {
-    //     return "login";
-    // }
-
-    // @PostMapping("/login")
-    // public String login(String user_id, String password, Model model) {
-    //     // Simulate authentication logic
-    //     User user = userRepository.findByUser_id(user_id).orElse(null);
-
-    //     if (user != null && user.getPassword().equals(password)) {
-    //         // Successful login
-    //         return "redirect:/dashboard";
-    //     } else {
-    //         // Failed login
-    //         model.addAttribute("error", "Invalid user_id or password");
-    //         return "login";
-    //     }
-    // }
 }
 
