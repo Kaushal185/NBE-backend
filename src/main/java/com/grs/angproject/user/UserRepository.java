@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 
 public interface UserRepository extends JpaRepository<Users, String> {
-    Optional<Users> findByUserId(String userId); // this line is casuing error
+    Optional<Users> findByUserId(String username); // this line is casuing error
 
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 public class AuthController {
 
     @Autowired
@@ -43,6 +43,22 @@ public class AuthController {
         res.setJwtToken(token);
         res.setUsername(userDetails.getUsername());
         return new ResponseEntity<>(res, HttpStatus.OK);
+        try {
+            // Attempt authentication
+            this.doAuthenticate(request.getUsername(), request.getPassword());
+    
+            // If authentication is successful, generate JWT token
+            UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+            String token = this.helper.generateToken(userDetails);
+    
+            JwtResponse res = new JwtResponse();
+            res.setJwtToken(token);
+            res.setUsername(userDetails.getUsername());
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (BadCredentialsException e) {
+            // If authentication fails, return 401 Unauthorized
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     private void doAuthenticate(String username, String password) {

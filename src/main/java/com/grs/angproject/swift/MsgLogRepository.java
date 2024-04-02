@@ -1,7 +1,5 @@
 package com.grs.angproject.swift;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
@@ -23,7 +20,10 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 	// )
 	Page<MsgLog> findByMessageType(String messageType, Pageable pageable);
 
-	Optional<MsgLog> findById(Long id);
+	@Query(
+		"SELECT m FROM MsgLog m WHERE m.reference = :reference"
+	)
+	Optional<MsgLog> findByReference(@Param("reference") String reference);
 
 	Optional<MsgLog> findMessageById(Long id);
 
@@ -46,17 +46,15 @@ public interface MsgLogRepository extends JpaRepository<MsgLog, Long> {
 
 
 	@Query(
-			"SELECT m FROM MsgLogExport m " +
-					"WHERE (UPPER(m.messageType) = UPPER(:messageType) OR :messageType IS NULL) " +
-					"AND (UPPER(m.identifier) = UPPER(:identifier) OR :identifier IS NULL) " +
-					"AND (UPPER(m.status) = UPPER(:status) OR :status IS NULL) " +
-					"AND (m.createdOn >= to_timestamp(:from,'YYYY-MM-DD') OR :from IS NULL) " +
-					"AND (m.createdOn <= to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) " +
-					"ORDER BY m.createdOn DESC"
-					// Add the limit clause for MySQL
-					+ " LIMIT 1000"
-	)
-	List<MsgLogExport> getFilteredForListToExcel(
+			  "SELECT m FROM MsgLogExport m " +
+			  "WHERE (UPPER(m.messageType) = UPPER(:messageType) OR :messageType IS NULL) " +
+			  "AND (UPPER(m.identifier) = UPPER(:identifier) OR :identifier IS NULL) " +
+			  "AND (UPPER(m.status) = UPPER(:status) OR :status IS NULL) " +
+			  "AND (m.createdOn >= to_timestamp(:from,'YYYY-MM-DD') OR :from IS NULL) " +
+			  "AND (m.createdOn < to_timestamp(:to,'YYYY-MM-DD') OR :to IS NULL) " +
+			  "ORDER BY m.createdOn DESC " +
+			  "LIMIT 1000")
+	 List<MsgLogExport> getFilteredForListToExcel(
 			@Param("messageType") String messageType,
 			@Param("identifier") String identifier,
 			@Param("status") String status,

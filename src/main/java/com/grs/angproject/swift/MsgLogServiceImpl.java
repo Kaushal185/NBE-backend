@@ -1,17 +1,13 @@
 package com.grs.angproject.swift;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import com.grs.angproject.user.Users;
 
 @Service
 public class MsgLogServiceImpl implements MsgLogService {
@@ -33,6 +29,11 @@ public class MsgLogServiceImpl implements MsgLogService {
     @Override
     public Optional<MsgLog> getSelectedId(Long id) {
         return msgLogRepository.findById(id);
+    }
+
+    @Override
+    public Optional<MsgLog> getSingleId(String reference){
+        return msgLogRepository.findByReference(reference);
     }
 
     @Override
