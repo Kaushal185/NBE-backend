@@ -1,6 +1,5 @@
 package com.grs.angproject.swift;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +13,8 @@ public interface MsgLogService {
     List<MsgLog> getAllRecords();
 
     Optional<MsgLog> getSelectedId(Long id);
+
+    Optional<MsgLog> getSingleId(String reference);
 
     Optional<MsgLog> getMessageById(Long id);
 

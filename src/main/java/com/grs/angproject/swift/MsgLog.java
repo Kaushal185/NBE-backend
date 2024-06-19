@@ -1,7 +1,5 @@
 package com.grs.angproject.swift;
 
-import java.math.BigDecimal;
-import java.sql.Clob;
 import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
@@ -58,6 +56,9 @@ public class MsgLog {
         return this.id;
     }
 //    private String source;
+
+    @Column(name = "REFERENCE")
+    private String reference;
 
     // Constructors, getters, and setters
 }
